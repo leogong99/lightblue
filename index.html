@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jing Gong - Front-End Engineer with 15+ years of experience building intuitive user interfaces">
+    <meta property="og:title" content="Jing Gong | Front-End Engineer">
+    <meta property="og:description" content="Portfolio showcasing 15+ years of front-end engineering experience at Oracle, Amazon, Samsung and more">
+    <meta property="og:type" content="website">
+    <title>Jing Gong | Front-End Engineer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel" src="data.json"></script>
+    <script type="text/babel">
+        // Import necessary components from libraries
+        const { useState, useEffect, useRef, createContext, useContext } = React;
+        const { BrowserRouter, Routes, Route, Link, useLocation } = ReactRouterDOM;
+        const { motion, AnimatePresence } = FramerMotion;
+
+        // Theme context for global state management
+        const ThemeContext = createContext();
+
+        // Main App component
+        function App() {
+            const [theme, setTheme] = useState('mario'); // 'mario' or 'dragonball'
+            
+            return (
+                <ThemeContext.Provider value={{ theme, setTheme }}>
+                    <BrowserRouter>
+                        <div className={`app-container ${theme}-theme`}>
+                            <Header />
+                            <AnimatePresence mode="wait">
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/experience" element={<Experience />} />
+                                    <Route path="/projects" element={<Projects />} />
+                                    <Route path="/skills" element={<Skills />} />
+                                    <Route path="/contact" element={<Contact />} />
+                                </Routes>
+                            </AnimatePresence>
+                            <Footer />
+                        </div>
+                    </BrowserRouter>
+                </ThemeContext.Provider>
+            );
+        }
+
+        // Header component with navigation
+        function Header() {
+            const { theme, setTheme } = useContext(ThemeContext);
+            const [menuOpen, setMenuOpen] = useState(false);
+            
+            return (
+                <header>
+                    <div className="logo">
+                        <motion.div 
+                            className="character-sprite"
+                            animate={{ x: [0, 10, 0], y: [0, -5, 0] }}
+                            transition={{ repeat: Infinity, duration: 2 }}
+                        >
+                            {theme === 'mario' ? '🎮' : '🔥'}
+                        </motion.div>
+                        <h1>Jing Gong</h1>
+                    </div>
+                    
+                    <button className="theme-toggle" onClick={() => setTheme(theme === 'mario' ? 'dragonball' : 'mario')}>
+                        Switch to {theme === 'mario' ? 'Dragon Ball' : 'Mario'} Theme
+                    </button>
+                    
+                    <nav>
+                        <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+                            Menu
+                        </button>
+                        <ul className={menuOpen ? 'open' : ''}>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/experience">Experience</Link></li>
+                            <li><Link to="/projects">Projects</Link></li>
+                            <li><Link to="/skills">Skills</Link></li>
+                            <li><Link to="/contact">Contact</Link></li>
+                        </ul>
+                    </nav>
+                </header>
+            );
+        }
+
+        // Home/Hero section
+        function Home() {
+            const { theme } = useContext(ThemeContext);
+            
+            return (
+                <motion.section 
+                    className="hero"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <div className="parallax-background">
+                        {theme === 'mario' && (
+                            <>
+                                <div className="cloud cloud-1"></div>
+                                <div className="cloud cloud-2"></div>
+                                <div className="coin coin-1"></div>
+                                <div className="coin coin-2"></div>
+                            </>
+                        )}
+                        {theme === 'dragonball' && (
+                            <>
+                                <div className="energy-ball energy-1"></div>
+                                <div className="energy-ball energy-2"></div>
+                            </>
+                        )}
+                    </div>
+                    
+                    <div className="hero-content">
+                        <motion.h1
+                            initial={{ y: -50 }}
+                            animate={{ y: 0 }}
+                            transition={{ type: "spring", stiffness: 100 }}
+                        >
+                            {theme === 'mario' ? 
+                                "Let's-a Go Build Amazing UIs!" : 
+                                "Coding with the Power of a Super Saiyan"}
+                        </motion.h1>
+                        
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            Front-End Engineer with 15+ years of experience crafting intuitive, 
+                            accessible, and performant user interfaces at Oracle, Amazon, Samsung and more.
+                        </motion.p>
+                        
+                        <motion.div 
+                            className="cta-buttons"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <Link to="/projects" className="btn primary">
+                                View Projects
+                                <span className={theme === 'mario' ? 'mario-icon' : 'db-icon'}></span>
+                            </Link>
+                            <Link to="/contact" className="btn secondary">
+                                Contact Me
+                            </Link>
+                        </motion.div>
+                    </div>
+                </motion.section>
+            );
+        }
+
+        // Experience Timeline component
+        function Experience() {
+            const { theme } = useContext(ThemeContext);
+            const experienceData = [
+                {
+                    company: "Oracle",
+                    role: "Senior Front-End Engineer",
+                    period: "2018-Present",
+                    achievements: [
+                        "Led development of Oracle IDE with React",
+                        "Improved accessibility compliance to WCAG AA",
+                        "Optimized CI/CD pipeline reducing build times by 40%"
+                    ],
+                    logo: "oracle-logo.png"
+                },
+                {
+                    company: "Amazon",
+                    role: "UI Engineer",
+                    period: "2015-2018",
+                    achievements: [
+                        "Redesigned Job Search experience",
+                        "Implemented responsive design patterns",
+                        "Reduced page load time by 30%"
+                    ],
+                    logo: "amazon-logo.png"
+                },
+                {
+                    company: "Samsung",
+                    role: "Front-End Developer",
+                    period: "2012-2015",
+                    achievements: [
+                        "Built interactive product showcases",
+                        "Developed cross-browser compatible UIs",
+                        "Created animation library for product pages"
+                    ],
+                    logo: "samsung-logo.png"
+                }
+            ];
+            
+            return (
+                <motion.section 
+                    className="experience"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <h2>My Journey</h2>
+                    
+                    <div className="timeline">
+                        {experienceData.map((job, index) => (
+                            <motion.div 
+                                className="timeline-item"
+                                key={index}
+                                initial={{ x: index % 2 === 0 ? -50 : 50, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1 }}
+                                transition={{ delay: index * 0.2 }}
+                                viewport={{ once: true }}
+                            >
+                                <div className="timeline-icon">
+                                    <img src={job.logo} alt={`${job.company} logo`} />
+                                    {theme === 'mario' && <div className="mario-pipe"></div>}
+                                    {theme === 'dragonball' && <div className="db-aura"></div>}
+                                </div>
+                                
+                                <div className="timeline-content">
+                                    <h3>{job.company}</h3>
+                                    <h4>{job.role}</h4>
+                                    <p className="period">{job.period}</p>
+                                    <ul>
+                                        {job.achievements.map((achievement, i) => (
+                                            <li key={i}>
+                                                {theme === 'mario' && <span className="coin-bullet">🪙</span>}
+                                                {theme === 'dragonball' && <span className="db-bullet">⭐</span>}
+                                                {achievement}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                    
+                    <motion.div 
+                        className="level-complete"
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring", stiffness: 100, delay: 1 }}
+                        viewport={{ once: true }}
+                    >
+                        {theme === 'mario' ? "LEVEL COMPLETE!" : "POWER LEVEL OVER 9000!"}
+                    </motion.div>
+                </motion.section>
+            );
+        }
+
+        // Projects Gallery component
+        function Projects() {
+            const projectsData = [
+                {
+                    title: "Oracle IDE",
+                    description: "A modern, accessible integrated development environment for Oracle Cloud applications.",
+                    image: "oracle-ide.gif",
+                    technologies: ["React", "TypeScript", "Accessibility", "Monaco Editor"]
+                },
+                {
+                    title: "Amazon Job Search Redesign",
+                    description: "Reimagined job search experience with improved filters and responsive design.",
+                    image: "job-search.gif",
+                    technologies: ["React", "Redux", "CSS Grid", "A/B Testing"]
+                },
+                {
+                    title: "Math Buddy",
+                    description: "Interactive math learning platform with AI-powered problem solving assistance.",
+                    image: "math-buddy.gif",
+                    technologies: ["React", "OpenAI API", "Canvas", "WebGL"]
+                }
+            ];
+            
+            return (
+                <motion.section 
+                    className="projects"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <h2>Featured Projects</h2>
+                    
+                    <div className="projects-grid">
+                        {projectsData.map((project, index) => (
+                            <motion.div 
+                                className="project-card"
+                                key={index}
+                                initial={{ y: 50, opacity: 0 }}
+                                whileInView={{ y: 0, opacity: 1 }}
+                                transition={{ delay: index * 0.2 }}
+                                whileHover={{ 
+                                    scale: 1.05,
+                                    boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
+                                }}
+                                viewport={{ once: true }}
+                            >
+                                <div className="project-image">
+                                    <img src={project.image} alt={project.title} />
+                                </div>
+                                
+                                <div className="project-content">
+                                    <h3>{project.title}</h3>
+                                    <p>{project.description}</p>
+                                    
+                                    <div className="tech-tags">
+                                        {project.technologies.map((tech, i) => (
+                                            <span key={i} className="tech-tag">{tech}</span>
+                                        ))}
+                                    </div>
+                                    
+                                    <button className="view-project-btn">
+                                        View Details
+                                        <span className="btn-effect"></span>
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.section>
+            );
+        }
+
+        // Skills Matrix component
+        function Skills() {
+            const { theme } = useContext(ThemeContext);
+            const skillsData = [
+                { name: "React", level: 95, icon: "react-icon.svg" },
+                { name: "JavaScript/TypeScript", level: 90, icon: "js-icon.svg" },
+                { name: "CSS/SASS", level: 85, icon: "css-icon.svg" },
+                { name: "Accessibility", level: 90, icon: "a11y-icon.svg" },
+                { name: "CI/CD", level: 80, icon: "cicd-icon.svg" },
+                { name: "Performance Optimization", level: 85, icon: "perf-icon.svg" },
+                { name: "Testing (Jest, RTL)", level: 80, icon: "test-icon.svg" },
+                { name: "UI/UX Design", level: 75, icon: "design-icon.svg" }
+            ];
+            
+            return (
+                <motion.section 
+                    className="skills"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <h2>Power Levels</h2>
+                    
+                    <div className="skills-grid">
+                        {skillsData.map((skill, index) => (
+                            <motion.div 
+                                className="skill-card"
+                                key={index}
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                whileInView={{ scale: 1, opacity: 1 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ 
+                                    scale: 1.05,
+                                    boxShadow: theme === 'mario' ? 
+                                        "0 0 15px rgba(255, 0, 0, 0.5)" : 
+                                        "0 0 20px rgba(255, 165, 0, 0.7)"
+                                }}
+                                viewport={{ once: true }}
+                            >
+                                <div className="skill-icon">
+                                    <img src={skill.icon} alt={skill.name} />
+                                    <div className={`${theme}-aura aura-effect`}></div>
+                                </div>
+                                
+                                <h3>{skill.name}</h3>
+                                
+                                <div className="skill-bar-container">
+                                    <motion.div 
+                                        className="skill-bar"
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: `${skill.level}%` }}
+                                        transition={{ duration: 1, delay: 0.3 }}
+                                        viewport={{ once: true }}
+                                    >
+                                        <span className="skill-level">{skill.level}%</span>
+                                    </motion.div>
+                                </div>
+                                
+                                {theme === 'dragonball' && (
+                                    <div className="scouter-reading">
+                                        Power Level: {skill.level * 100}
+                                    </div>
+                                )}
+                            </motion.div>
+                        ))}
+                    </div>
+                    
+                    <div className="passion-statement">
+                        <h3>My Passion</h3>
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            viewport={{ once: true }}
+                        >
+                            I'm dedicated to simplifying UI/UX and creating intuitive interfaces that 
+                            make technology accessible to everyone. Just as {theme === 'mario' ? 
+                            'Mario navigates complex worlds with simple controls' : 
+                            'Dragon Ball characters harness complex energy with focused techniques'}, 
+                            I strive to make complex interactions feel natural and effortless.
+                        </motion.p>
+                    </div>
+                </motion.section>
+            );
+        }
+
+        // Contact component
+        function Contact() {
+            const { theme } = useContext(ThemeContext);
+            const socialLinks = [
+                { name: "LinkedIn", url: "https://linkedin.com/in/jinggong", icon: "linkedin-icon.svg" },
+                { name: "GitHub", url: "https://github.com/jinggong", icon: "github-icon.svg" },
+                { name: "Twitter", url: "https://twitter.com/jinggong", icon: "twitter-icon.svg" },
+                { name: "Email", url: "mailto:jing@example.com", icon: "email-icon.svg" }
+            ];
+            
+            return (
+                <motion.section 
+                    className="contact"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <h2>Get In Touch</h2>
+                    
+                    <div className="contact-container">
+                        <div className="contact-info">
+                            <p>I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.</p>
+                            
+                            <div className="social-links">
+                                {socialLinks.map((link, index) => (
+                                    <motion.a 
+                                        href={link.url}
+                                        key={index}
+                                        className={`social-link ${theme}-social`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        initial={{ y: 20, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ delay: index * 0.2 }}
+                                        whileHover={{ 
+                                            scale: 1.2,
+                                            rotate: theme === 'mario' ? 10 : 0,
+                                            boxShadow: theme === 'dragonball' ? "0 0 15px orange" : "none"
+                                        }}
+                                    >
+                                        <img src={link.icon} alt={link.name} />
+                                        <span>{link.name}</span>
+                                    </motion.a>
+                                ))}
+                            </div>
+                        </div>
+                        
+                        <motion.form 
+                            className="contact-form"
+                            initial={{ x: 50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            <div className="form-group">
+                                <label htmlFor="name">Name</label>
+                                <input type="text" id="name" name="name" required />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input type="email" id="email" name="email" required />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="message">Message</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            
+                            <motion.button 
+                                type="submit"
+                                className={`submit-btn ${theme}-btn`}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                {theme === 'mario' ? "Let's-a Go!" : "Send Energy!"}
+                                <span className="btn-effect"></span>
+                            </motion.button>
+                        </motion.form>
+                    </div>
+                </motion.section>
+            );
+        }
+
+        // Footer component
+        function Footer() {
+            return (
+                <footer>
+                    <p>&copy; {new Date().getFullYear()} Jing Gong. All rights reserved.</p>
+                    <p>Built with React and a passion for great UX</p>
+                </footer>
+            );
+        }
+
+        // Render the App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

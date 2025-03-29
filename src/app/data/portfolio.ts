@@ -116,7 +116,7 @@ export const projects: Project[] = [
     link: "https://mathaibuddy-675937690896.us-central1.run.app/"
   },
   {
-    title: "Oracle IDE",
+    title: "Oracle Code Editor IDE",
     description: "A modern, cloud-based IDE for developers with real-time collaboration features.",
     technologies: ["React", "TypeScript", "Monaco Editor", "WebSocket", "OCI Services"],
     highlights: [
@@ -125,7 +125,8 @@ export const projects: Project[] = [
       "Cloud-based file system integration",
       "Optimized loading time",
       "Advanced caching mechanisms"
-    ]
+    ],
+    link: "https://docs.oracle.com/en-us/iaas/Content/API/Concepts/code_editor_intro.htm"
   },
   {
     title: "Amazon Job Search Redesign",
@@ -137,7 +138,21 @@ export const projects: Project[] = [
       "Accessibility improvements",
       "One-click application process",
       "Seamless legacy system integration"
-    ]
+    ],
+    link: "https://amazon.jobs/en/search"
+  },
+  {
+    title: "Credit Union Financial Calculator",
+    description: "7 financial calculators with highcharts cross web, mobile and tablet",
+    technologies: ["JavaScript", "CSS", "Accessibility", "highChart"],
+    highlights: [
+      "Implemented 7 financial calculators with highcharts",
+      "Designed a responsive web interface",
+      "Implemented accessibility features",
+      "Optimized performance",
+      "Cross-platform compatibility"
+    ],
+    link: "https://www.vancity.com/borrow/mortgages/calculator/"
   }
 ];
 

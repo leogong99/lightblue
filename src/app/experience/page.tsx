@@ -143,9 +143,9 @@ export default function Experience() {
               <h2 className="text-2xl font-bold text-gray-900">Career Summary</h2>
             </div>
             <p className="text-gray-700 max-w-3xl mx-auto text-center">
-              With over 15 years of experience in front-end development, I've consistently focused on creating 
+              {`With over 15 years of experience in front-end development, I've consistently focused on creating 
               simple, intuitive, and accessible user interfaces. My journey has taken me through major tech companies, 
-              where I've led teams, optimized performance, and improved user experiences across various platforms.
+              where I've led teams, optimized performance, and improved user experiences across various platforms.`}
             </p>
           </div>
         </motion.div>

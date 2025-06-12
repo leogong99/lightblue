@@ -88,7 +88,7 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-bold text-gray-900 mb-4">My Philosophy</h2>
-            <p className="text-xl text-gray-700">Keep it simple, make it work</p>
+            <p className="text-xl text-gray-700">Make it work, keep it simple</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

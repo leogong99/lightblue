@@ -73,7 +73,7 @@ export default function Experience() {
                       </h4>
                       <ul className="space-y-3">
                         {experience.achievements.map((achievement, i) => (
-                          <li key={i} className="flex items-start text-gray-700">
+                          <li key={`${experience.company}-achievement-${i}`} className="flex items-start text-gray-700">
                             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-3"></span>
                             {achievement}
                           </li>
@@ -102,7 +102,7 @@ export default function Experience() {
                       <div className="flex flex-wrap gap-2">
                         {experience.technologies.map((tech, i) => (
                           <span
-                            key={i}
+                            key={`${experience.company}-tech-${i}`}
                             className="px-3 py-1 bg-blue-50 text-gray-700 rounded-full text-sm hover:bg-blue-100 transition-colors"
                           >
                             {tech}

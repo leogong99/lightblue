@@ -36,7 +36,7 @@ export default function Projects() {
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">Key Features</h3>
                     <ul className="list-disc list-inside space-y-1 text-gray-700">
                       {project.highlights.map((highlight, i) => (
-                        <li key={i}>{highlight}</li>
+                        <li key={`${project.title}-highlight-${i}`}>{highlight}</li>
                       ))}
                     </ul>
                   </div>
@@ -46,7 +46,7 @@ export default function Projects() {
                     <div className="flex flex-wrap gap-2">
                       {project.technologies.map((tech, i) => (
                         <span
-                          key={i}
+                          key={`${project.title}-tech-${i}`}
                           className="px-3 py-1 bg-blue-50 text-gray-700 rounded-full text-sm"
                         >
                           {tech}

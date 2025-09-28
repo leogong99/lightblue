@@ -1,7 +1,7 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
 // Brutalism theme specific components
 export function BrutalCard({ children, className = '', handDrawn = false }: { children: React.ReactNode; className?: string; handDrawn?: boolean }) {
@@ -12,7 +12,7 @@ export function BrutalCard({ children, className = '', handDrawn = false }: { ch
   );
 }
 
-export function BrutalButton({ children, className = '', size = 'medium', ...props }: { children: React.ReactNode; className?: string; size?: 'small' | 'medium' | 'large'; [key: string]: any }) {
+export function BrutalButton({ children, className = '', size = 'medium', ...props }: { children: React.ReactNode; className?: string; size?: 'small' | 'medium' | 'large'; [key: string]: unknown }) {
   const sizeClasses = {
     small: 'px-4 py-2 text-sm',
     medium: 'px-6 py-3 text-base',
@@ -36,7 +36,6 @@ export function BrutalButton({ children, className = '', size = 'medium', ...pro
 }
 
 export function BrutalHeading({ children, level = 1, className = '', oversized = false }: { children: React.ReactNode; level?: 1 | 2 | 3 | 4 | 5 | 6; className?: string; oversized?: boolean }) {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
   const sizeClasses = {
     1: oversized ? 'text-6xl sm:text-7xl font-black' : 'text-4xl sm:text-5xl font-black',
     2: oversized ? 'text-5xl sm:text-6xl font-black' : 'text-3xl font-black',
@@ -47,9 +46,9 @@ export function BrutalHeading({ children, level = 1, className = '', oversized =
   };
 
   return (
-    <Tag className={`text-gray-800 ${sizeClasses[level]} ${className}`}>
+    <div className={`text-gray-800 ${sizeClasses[level]} ${className}`} role="heading" aria-level={level}>
       {children}
-    </Tag>
+    </div>
   );
 }
 

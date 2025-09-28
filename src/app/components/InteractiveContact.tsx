@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface Message {
@@ -66,7 +66,7 @@ export default function InteractiveContact() {
     setMessages(prev => [...prev, newMessage]);
   };
 
-  const getBotResponse = (userMessage: string) => {
+  const getBotResponse = () => {
     const responses = botResponses[conversationStep as keyof typeof botResponses];
     return responses[Math.floor(Math.random() * responses.length)];
   };
@@ -80,7 +80,7 @@ export default function InteractiveContact() {
 
     // Simulate bot thinking time
     setTimeout(() => {
-      const response = getBotResponse(currentInput);
+      const response = getBotResponse();
       addMessage(response, 'bot');
       setIsTyping(false);
 
@@ -115,8 +115,8 @@ export default function InteractiveContact() {
               <span className={`${currentTheme === 'retro' ? 'text-[var(--text-primary)]' : 'text-blue-600'} text-xl`}>👋</span>
             </div>
             <div>
-              <h3 className="text-white font-semibold">Let's Chat!</h3>
-              <p className="text-blue-100 text-sm">I'm here to help you get started</p>
+              <h3 className="text-white font-semibold">Let&apos;s Chat!</h3>
+              <p className="text-blue-100 text-sm">I&apos;m here to help you get started</p>
             </div>
           </div>
         </div>

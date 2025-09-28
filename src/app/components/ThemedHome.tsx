@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import ProfileCanvas from './backgroundCanvas';
 import SkillRadar from './SkillRadar';
@@ -11,12 +11,12 @@ import InteractiveContact from './InteractiveContact';
 import CursorTrail from './CursorTrail';
 import ProjectShowcase from './ProjectShowcase';
 import ThemeSwitcher from './ThemeSwitcher';
-import { ZenMode, ZenCard, ZenButton, ZenHeading, ZenText, ZenAccent } from './themes/ZenMode';
-import { RetroCard, RetroButton, RetroHeading, RetroText, RetroAccent, RetroTerminal, RetroMatrix, RetroGlitchText } from './themes/RetroFuturistic';
-import { BrutalCard, BrutalButton, BrutalHeading, BrutalText, BrutalAccent, BrutalCallout, BrutalStickyNote, BrutalSandbox, BrutalDoodle } from './themes/SoftBrutalism';
+import { ZenMode, ZenCard, ZenButton, ZenHeading, ZenText } from './themes/ZenMode';
+import { RetroCard, RetroButton, RetroHeading, RetroText, RetroMatrix } from './themes/RetroFuturistic';
+import { BrutalCard, BrutalButton, BrutalHeading, BrutalText } from './themes/SoftBrutalism';
 
 export default function ThemedHome() {
-  const { currentTheme, isZenMode, isKonamiUnlocked } = useTheme();
+  const { currentTheme } = useTheme();
   const [currentTagline, setCurrentTagline] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [easterEggs, setEasterEggs] = useState({
@@ -27,7 +27,7 @@ export default function ThemedHome() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 300], [0, -50]);
 
-  const taglines = {
+  const taglines = useMemo(() => ({
     zen: [
       "Mindful Design, Meaningful Impact",
       "Simplicity in Every Pixel",
@@ -52,15 +52,15 @@ export default function ThemedHome() {
       "ACCESSIBLE BY DESIGN",
       "PERFORMANCE IS EVERYTHING"
     ]
-  };
+  }), []);
 
   useEffect(() => {
     setIsLoaded(true);
     const interval = setInterval(() => {
-      setCurrentTagline((prev) => (prev + 1) % taglines[currentTheme].length);
+      setCurrentTagline((prev) => (prev + 1) % (taglines[currentTheme as keyof typeof taglines]?.length || 1));
     }, 3000);
     return () => clearInterval(interval);
-  }, [currentTheme]);
+  }, [currentTheme, taglines]);
 
   // Konami code easter egg
   useEffect(() => {
@@ -87,13 +87,6 @@ export default function ThemedHome() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handleSecretClick = () => {
-    setEasterEggs(prev => ({
-      ...prev,
-      clickCount: prev.clickCount + 1,
-      showSecret: prev.clickCount >= 4
-    }));
-  };
 
   const getThemeClasses = () => {
     const baseClasses = "min-h-screen transition-all duration-500";
@@ -414,7 +407,7 @@ export default function ThemedHome() {
                       </svg>
                     </div>
                     <RetroHeading level={3} className="mb-2">INNOVATION</RetroHeading>
-                    <RetroText>PUSHING THE BOUNDARIES OF WHAT'S POSSIBLE IN WEB DEVELOPMENT</RetroText>
+                    <RetroText>PUSHING THE BOUNDARIES OF WHAT&apos;S POSSIBLE IN WEB DEVELOPMENT</RetroText>
                   </RetroCard>
                 </>
               )}
@@ -447,7 +440,7 @@ export default function ThemedHome() {
                       </svg>
                     </div>
                     <BrutalHeading level={3} className="mb-2">PERFORMANCE</BrutalHeading>
-                    <BrutalText>SPEED IS NOT OPTIONAL. IT'S ESSENTIAL.</BrutalText>
+                    <BrutalText>SPEED IS NOT OPTIONAL. IT&apos;S ESSENTIAL.</BrutalText>
                   </BrutalCard>
                 </>
               )}
@@ -571,7 +564,7 @@ export default function ThemedHome() {
             >
               {currentTheme === 'zen' && (
                 <>
-                  <ZenHeading level={2} className="mb-4">Let's Work Together</ZenHeading>
+                  <ZenHeading level={2} className="mb-4">Let&apos;s Work Together</ZenHeading>
                   <ZenText>Start a conversation about your next project</ZenText>
                 </>
               )}
@@ -583,7 +576,7 @@ export default function ThemedHome() {
               )}
               {currentTheme === 'brutalism' && (
                 <>
-                  <BrutalHeading level={2} oversized className="mb-4">LET'S TALK</BrutalHeading>
+                  <BrutalHeading level={2} oversized className="mb-4">LET&apos;S TALK</BrutalHeading>
                   <BrutalText className="text-2xl">READY TO BUILD SOMETHING AMAZING?</BrutalText>
                 </>
               )}

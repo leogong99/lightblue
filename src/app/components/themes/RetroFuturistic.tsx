@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Retro theme specific components
 export function RetroCard({ children, className = '', glitch = false }: { children: React.ReactNode; className?: string; glitch?: boolean }) {
@@ -12,7 +11,7 @@ export function RetroCard({ children, className = '', glitch = false }: { childr
   );
 }
 
-export function RetroButton({ children, className = '', neon = false, ...props }: { children: React.ReactNode; className?: string; neon?: boolean; [key: string]: any }) {
+export function RetroButton({ children, className = '', neon = false, ...props }: { children: React.ReactNode; className?: string; neon?: boolean; [key: string]: unknown }) {
   return (
     <button 
       className={`
@@ -29,8 +28,7 @@ export function RetroButton({ children, className = '', neon = false, ...props }
   );
 }
 
-export function RetroHeading({ children, level = 1, className = '', glitch = false, ...props }: { children: React.ReactNode; level?: 1 | 2 | 3 | 4 | 5 | 6; className?: string; glitch?: boolean; [key: string]: any }) {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+export function RetroHeading({ children, level = 1, className = '', glitch = false, ...props }: { children: React.ReactNode; level?: 1 | 2 | 3 | 4 | 5 | 6; className?: string; glitch?: boolean; [key: string]: unknown }) {
   const sizeClasses = {
     1: 'text-4xl sm:text-5xl font-mono font-bold',
     2: 'text-3xl font-mono font-bold',
@@ -41,9 +39,9 @@ export function RetroHeading({ children, level = 1, className = '', glitch = fal
   };
 
   const content = (
-    <Tag className={`text-[var(--text-primary)] ${sizeClasses[level]} ${className}`} {...props}>
+    <div className={`text-[var(--text-primary)] ${sizeClasses[level]} ${className}`} {...props}>
       {children}
-    </Tag>
+    </div>
   );
 
   if (glitch) {

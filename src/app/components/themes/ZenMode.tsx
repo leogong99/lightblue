@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import React from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface ZenModeProps {
@@ -28,7 +28,7 @@ export function ZenCard({ children, className = '' }: { children: React.ReactNod
   );
 }
 
-export function ZenButton({ children, className = '', ...props }: { children: React.ReactNode; className?: string; [key: string]: any }) {
+export function ZenButton({ children, className = '', ...props }: { children: React.ReactNode; className?: string; [key: string]: unknown }) {
   return (
     <button 
       className={`zen-hover px-6 py-3 bg-slate-700 text-white border-2 border-slate-600 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 hover:bg-slate-800 hover:border-slate-700 ${className}`}
@@ -40,7 +40,6 @@ export function ZenButton({ children, className = '', ...props }: { children: Re
 }
 
 export function ZenHeading({ children, level = 1, className = '' }: { children: React.ReactNode; level?: 1 | 2 | 3 | 4 | 5 | 6; className?: string }) {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
   const sizeClasses = {
     1: 'text-4xl sm:text-5xl font-light',
     2: 'text-3xl font-light',
@@ -51,9 +50,9 @@ export function ZenHeading({ children, level = 1, className = '' }: { children: 
   };
 
   return (
-    <Tag className={`text-slate-900 ${sizeClasses[level]} ${className}`}>
+    <div className={`text-slate-900 ${sizeClasses[level]} ${className}`} role="heading" aria-level={level}>
       {children}
-    </Tag>
+    </div>
   );
 }
 

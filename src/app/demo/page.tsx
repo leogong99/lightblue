@@ -2,7 +2,7 @@
 
 import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 import { ZenMode, ZenCard, ZenButton, ZenHeading, ZenText } from '../components/themes/ZenMode';
-import { RetroCard, RetroButton, RetroHeading, RetroText, RetroTerminal, RetroMatrix } from '../components/themes/RetroFuturistic';
+import { RetroCard, RetroButton, RetroHeading, RetroText, RetroTerminal } from '../components/themes/RetroFuturistic';
 import { BrutalCard, BrutalButton, BrutalHeading, BrutalText, BrutalCallout, BrutalStickyNote, BrutalSandbox } from '../components/themes/SoftBrutalism';
 
 function ThemeDemo() {
@@ -23,7 +23,7 @@ function ThemeDemo() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ZenCard>
                 <ZenHeading level={3} className="mb-3">Simplicity</ZenHeading>
-                <ZenText>Clean lines, soft neutrals, subtle animations that don't distract from content.</ZenText>
+                <ZenText>Clean lines, soft neutrals, subtle animations that don&apos;t distract from content.</ZenText>
                 <div className="mt-4">
                   <ZenButton>Learn More</ZenButton>
                 </div>

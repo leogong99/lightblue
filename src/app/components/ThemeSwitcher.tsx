@@ -121,7 +121,6 @@ export default function ThemeSwitcher() {
                       `}
                       role="menuitem"
                       aria-label={`Switch to ${theme.name} theme: ${theme.description}`}
-                      aria-pressed={currentTheme === theme.id}
                     >
                       <div className="flex items-center space-x-3">
                         <span className="text-2xl">{theme.icon}</span>

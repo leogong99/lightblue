@@ -22,7 +22,7 @@ const projects: Project[] = [
     description: 'Led development of Oracle IDE with 50% faster loading times and Level AA accessibility compliance.',
     tech: ['TypeScript', 'React', 'Webpack', 'Jest'],
     category: 'Enterprise',
-    demo: 'https://oracle.com/ide',
+    demo: 'https://www.oracle.com/application-development/code-editor/',
     image: '🔧',
     features: ['50% faster loading', 'WCAG 2.1 AA compliance', '99% test coverage']
   },
@@ -32,19 +32,29 @@ const projects: Project[] = [
     description: 'Enhanced job search experience for millions of users with responsive design and performance optimization.',
     tech: ['React', 'Redux', 'SASS', 'Jest'],
     category: 'Commerce',
-    demo: 'https://amazon.jobs',
+    demo: 'https://amazon.jobs/search',
     image: '🛒',
     features: ['30% increased engagement', 'One-click applications', 'Mobile-first design']
   },
   {
-    id: 'samsung-knox',
-    title: 'Samsung Knox Frontend',
-    description: 'Developed enterprise security frontend using MVC pattern with reusable component library.',
-    tech: ['JavaScript', 'jQuery', 'CSS3', 'MVC'],
-    category: 'Security',
-    demo: 'https://samsungknox.com',
-    image: '🔒',
-    features: ['MVC architecture', 'Component library', 'Cross-browser support']
+    id: 'math-buddy',
+    title: 'Math Buddy',
+    description: 'Math Buddy - A friendly AI chatbot to help kids learn math with interactive conversations',
+    tech: ['React', 'Tailwind CSS', 'SSO', 'next.js', 'OpenAI API'],
+    category: 'Education',
+    demo: 'https://mathaibuddy-675937690896.us-central1.run.app/',
+    image: '🧮',
+    features: ['AI-powered tutoring', 'Conversational learning', 'SSO authentication', 'Responsive design']
+  },
+  {
+    id: 'ai-content-capture',
+    title: 'AI Content Capture',
+    description: 'AI-Powered Chrome Extension for Local Content Capture, Categorization, and Search',
+    tech: ['React', 'Vite', 'Chrome Extension API', 'AI Categorization'],
+    category: 'Tools',
+    demo: 'https://chromewebstore.google.com/detail/ai-content-capture/kgipgbpgioegdgjljhijgepfocfoolfd',
+    image: '🎯',
+    features: ['AI-powered categorization', 'Local content storage', 'Smart search functionality', 'Chrome extension']
   }
 ];
 

@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Archivo, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/Navigation";
 import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
 
-const inter = Inter({ subsets: ["latin"] });
+const archivo = Archivo({ 
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-archivo',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "Jing Gong - Senior Frontend Engineer",
@@ -31,7 +43,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.className} bg-gray-50 antialiased`}>
+      <body className={`${archivo.variable} ${spaceGrotesk.variable} font-sans bg-neutral-50 antialiased`}>
         {/* Scroll Progress Bar */}
         <ScrollProgress />
         

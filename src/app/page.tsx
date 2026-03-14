@@ -237,25 +237,6 @@ export default function Home() {
                     <p className="text-slate-400 dark:text-zinc-500">{'// into elegant, scalable solutions.'}</p>
                     <p className="text-slate-400 dark:text-zinc-500">{'// React · TypeScript · modern web tech.'}</p>
                   </motion.div>
-
-                  {/* Location + availability */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: mounted ? 1 : 0 }}
-                    transition={{ duration: 0.5, delay: 0.95 }}
-                    className="flex flex-wrap items-center gap-4 mb-10 text-sm font-mono text-slate-500 dark:text-zinc-500"
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <FiMapPin size={13} className="text-cyan-600 dark:text-cyan-400" />
-                      Seattle, WA
-                    </span>
-                    <span className="text-slate-300 dark:text-zinc-700">·</span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse" />
-                      Open to opportunities
-                    </span>
-                  </motion.div>
-
                   {/* CTAs */}
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}

@@ -43,7 +43,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${archivo.variable} ${spaceGrotesk.variable} font-sans bg-neutral-50 antialiased`}>
+      <body className={`${archivo.variable} ${spaceGrotesk.variable} font-sans antialiased`} style={{ background: 'var(--page-bg)' }}>
         {/* Scroll Progress Bar */}
         <ScrollProgress />
         
@@ -65,41 +65,35 @@ export default function RootLayout({
         <BackToTop />
 
         {/* Footer */}
-        <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0">
-                <p className="text-gray-400">
-                  © {new Date().getFullYear()} Jing Gong. All rights reserved.
-                </p>
-              </div>
-              <div className="flex gap-6">
+        <footer
+          className="relative py-10 px-4 sm:px-6 lg:px-8"
+          style={{ borderTop: '1px solid var(--divider)' }}
+        >
+          <div
+            className="absolute top-0 left-0 right-0 h-px"
+            style={{ background: 'var(--top-line)' }}
+          />
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="font-mono text-xs text-slate-400 dark:text-zinc-700">
+              © {new Date().getFullYear()} Jing Gong. All rights reserved.
+            </p>
+            <div className="flex gap-6">
+              {[
+                { href: 'https://github.com/jinggong', label: 'GitHub' },
+                { href: 'https://linkedin.com/in/javascriptguru', label: 'LinkedIn' },
+                { href: 'mailto:leogong99@gmail.com', label: 'Email' },
+              ].map(({ href, label }) => (
                 <a
-                  href="https://github.com/jinggong"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                  aria-label="GitHub"
+                  key={label}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="text-slate-400 dark:text-zinc-600 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200 font-mono text-xs"
+                  aria-label={label}
                 >
-                  GitHub
+                  {label}
                 </a>
-                <a
-                  href="https://linkedin.com/in/javascriptguru"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  LinkedIn
-                </a>
-                <a
-                  href="mailto:leogong99@gmail.com"
-                  className="text-gray-400 hover:text-white transition-colors"
-                  aria-label="Email"
-                >
-                  Email
-                </a>
-              </div>
+              ))}
             </div>
           </div>
         </footer>

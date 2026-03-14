@@ -3,228 +3,465 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { 
-  FiGithub, 
-  FiLinkedin, 
-  FiMail, 
-  FiArrowRight, 
-  FiCode, 
-  FiLayers, 
+import {
+  FiGithub,
+  FiLinkedin,
+  FiMail,
+  FiArrowRight,
+  FiCode,
+  FiTerminal,
+  FiCpu,
+  FiGlobe,
+  FiLayers,
   FiZap,
+  FiCheckCircle,
+  FiMapPin,
   FiAward,
-  FiTrendingUp,
-  FiCheckCircle
 } from 'react-icons/fi';
 import { experiences, projects } from './data/portfolio';
 
+function useTypewriter(text: string, speed = 55, startDelay = 800) {
+  const [displayed, setDisplayed] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    let i = 0;
+    const delay = setTimeout(() => {
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          setDisplayed(text.slice(0, i + 1));
+          i++;
+        } else {
+          setIsComplete(true);
+          clearInterval(timer);
+        }
+      }, speed);
+      return () => clearInterval(timer);
+    }, startDelay);
+    return () => clearTimeout(delay);
+  }, [text, speed, startDelay]);
+
+  return { displayed, isComplete };
+}
+
+const topSkills = [
+  'React', 'TypeScript', 'JavaScript', 'CSS3', 'HTML5', 'Sass',
+  'Webpack', 'Git', 'CI/CD', 'Docker', 'Jest', 'Selenium',
+  'ESLint', 'Monaco Editor', 'WebSocket', 'Performance Optimization',
+];
+
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const heroY = useTransform(scrollYProgress, [0, 0.3], ['0%', '15%']);
+
+  const { displayed: typedRole, isComplete: roleComplete } = useTypewriter('Senior Frontend Engineer');
 
   useEffect(() => {
     setMounted(true);
+    const updateTime = () => {
+      setCurrentTime(
+        new Date().toLocaleTimeString('en-US', {
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
+      );
+    };
+    updateTime();
+    const t = setInterval(updateTime, 1000);
+    return () => clearInterval(t);
   }, []);
 
   const stats = [
-    { label: 'Years Experience', value: '15+', icon: FiTrendingUp },
-    { label: 'Projects Delivered', value: '50+', icon: FiCheckCircle },
-    { label: 'Technologies', value: '20+', icon: FiCode },
+    { label: 'Years of Experience', value: '15+', bgVar: '--stat-blue-bg', borderVar: '--stat-blue-border', color: '#3B82F6' },
+    { label: 'Projects Delivered', value: '50+', bgVar: '--stat-green-bg', borderVar: '--stat-green-border', color: '#10B981' },
+    { label: 'Technologies', value: '20+', bgVar: '--stat-purple-bg', borderVar: '--stat-purple-border', color: '#8B5CF6' },
   ];
 
-  const highlights = [
-    { 
-      icon: FiCode, 
-      title: 'Clean Architecture', 
-      description: 'Writing maintainable, scalable code with modern best practices'
+  const capabilities = [
+    {
+      icon: FiCode,
+      title: 'Clean Architecture',
+      description: 'Maintainable, scalable code with modern design patterns and best practices.',
+      tags: ['React', 'TypeScript', 'MVC'],
+      color: '#3B82F6',
     },
-    { 
-      icon: FiLayers, 
-      title: 'User-Centered Design', 
-      description: 'Creating intuitive interfaces that users love to interact with'
+    {
+      icon: FiLayers,
+      title: 'User-Centered Design',
+      description: 'Intuitive interfaces that prioritize accessibility and delightful experience.',
+      tags: ['WCAG AA', 'Responsive', 'UX'],
+      color: '#06B6D4',
     },
-    { 
-      icon: FiZap, 
-      title: 'High Performance', 
-      description: 'Building fast, optimized experiences that scale efficiently'
+    {
+      icon: FiZap,
+      title: 'High Performance',
+      description: 'Optimized loading times, caching strategies, and rendering efficiency.',
+      tags: ['50% faster', 'Core Web Vitals', 'Caching'],
+      color: '#8B5CF6',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section - Block-based geometric layout */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-16">
-        {/* Geometric pattern background */}
-        <div className="absolute inset-0 block-pattern opacity-40" aria-hidden="true" />
-        
-        {/* Geometric accent shapes */}
-        <motion.div
-          style={{ y }}
-          className="absolute top-32 right-10 w-64 h-64 bg-accent/10 rounded-lg"
-          initial={{ opacity: 0, rotate: 0 }}
-          animate={{ opacity: 1, rotate: 15 }}
-          transition={{ duration: 1 }}
-          aria-hidden="true"
-        />
-        <motion.div
-          style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '30%']) }}
-          className="absolute bottom-32 left-10 w-48 h-48 bg-primary/5 rounded-lg"
-          initial={{ opacity: 0, rotate: 0 }}
-          animate={{ opacity: 1, rotate: -15 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          aria-hidden="true"
-        />
+    <div className="min-h-screen overflow-x-hidden" style={{ background: 'var(--page-bg)' }}>
+      {/* Dot grid */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `radial-gradient(circle, var(--dot-color) 1px, transparent 1px)`,
+          backgroundSize: '30px 30px',
+        }}
+      />
+      {/* Ambient orbs */}
+      <div
+        className="fixed top-1/4 -left-48 w-[500px] h-[500px] rounded-full pointer-events-none z-0"
+        style={{ background: `radial-gradient(circle, var(--orb-blue) 0%, transparent 70%)` }}
+      />
+      <div
+        className="fixed bottom-1/3 -right-48 w-[500px] h-[500px] rounded-full pointer-events-none z-0"
+        style={{ background: `radial-gradient(circle, var(--orb-cyan) 0%, transparent 70%)` }}
+      />
 
-        <div className="relative max-w-7xl mx-auto text-center z-10">
+      {/* ── HERO ── */}
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 z-10">
+        <motion.div style={{ y: heroY }} className="relative max-w-6xl mx-auto w-full">
+
+          {/* Terminal chrome bar */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 30 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : -16 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-3 mb-3"
           >
-            {/* Large typography (32px+) */}
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-heading font-bold text-primary mb-8 leading-none tracking-tight">
-              Jing Gong
-            </h1>
-
-            <p className="text-2xl sm:text-3xl lg:text-4xl text-secondary mb-6 font-heading font-semibold">
-              Senior Frontend Engineer
-            </p>
-
-            <p className="text-lg sm:text-xl text-zinc-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Building exceptional web experiences with{' '}
-              <span className="text-accent font-semibold">React</span>,{' '}
-              <span className="text-accent font-semibold">TypeScript</span>, and modern web technologies.
-              15+ years of turning complex problems into elegant solutions.
-            </p>
-
-            {/* Bold CTA buttons with color shift on hover */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-              <Link href="/projects">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="group px-10 py-5 bg-primary text-white rounded-lg font-heading font-bold text-lg shadow-lg hover:bg-accent transition-colors duration-200 flex items-center gap-3 cursor-pointer"
-                >
-                  View My Work
-                  <FiArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />
-                </motion.button>
-              </Link>
-              
-              <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-10 py-5 bg-white text-primary rounded-lg font-heading font-bold text-lg border-3 border-primary hover:bg-primary hover:text-white transition-colors duration-200 cursor-pointer shadow-lg"
-                >
-                  Get in Touch
-                </motion.button>
-              </Link>
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-red-400/80" />
+              <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
+              <div className="w-3 h-3 rounded-full bg-green-400/80" />
             </div>
-
-            {/* Social Links with proper cursor pointer */}
-            <div className="flex gap-8 justify-center">
-              <motion.a
-                whileHover={{ scale: 1.15, y: -4 }}
-                whileTap={{ scale: 0.95 }}
-                href="https://github.com/jinggong"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow text-primary hover:text-accent border-2 border-zinc-200 hover:border-accent cursor-pointer"
-                aria-label="GitHub Profile"
-              >
-                <FiGithub size={28} />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.15, y: -4 }}
-                whileTap={{ scale: 0.95 }}
-                href="https://linkedin.com/in/javascriptguru"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow text-primary hover:text-accent border-2 border-zinc-200 hover:border-accent cursor-pointer"
-                aria-label="LinkedIn Profile"
-              >
-                <FiLinkedin size={28} />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.15, y: -4 }}
-                whileTap={{ scale: 0.95 }}
-                href="mailto:leogong99@gmail.com"
-                className="p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow text-primary hover:text-accent border-2 border-zinc-200 hover:border-accent cursor-pointer"
-                aria-label="Email Contact"
-              >
-                <FiMail size={28} />
-              </motion.a>
+            <div
+              className="flex-1 rounded-md px-4 py-1.5 text-xs font-mono flex justify-between items-center"
+              style={{
+                background: 'var(--terminal-bar-bg)',
+                border: '1px solid var(--card-border)',
+              }}
+            >
+              <span className="text-slate-400 dark:text-zinc-500">~/portfolio/jing-gong — zsh</span>
+              <span className="text-green-600 dark:text-green-400">{currentTime}</span>
             </div>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Stats Section - Large gaps (48px+) */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative p-12 bg-background rounded-2xl border-2 border-zinc-200 hover:border-accent transition-colors duration-200 cursor-pointer geometric-accent"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-6">
-                      <Icon className="text-white" size={32} />
-                    </div>
-                    <div className="text-6xl font-heading font-bold text-accent mb-3">{stat.value}</div>
-                    <div className="text-lg text-zinc-600 font-semibold">{stat.label}</div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* What I Bring Section - Block-based layout */}
-      <section className="section-spacing px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+          {/* Main card */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: mounted ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="relative rounded-2xl overflow-hidden"
+            style={{
+              background: 'var(--card-bg)',
+              border: '1px solid var(--card-border)',
+              boxShadow: 'var(--card-shadow)',
+            }}
+          >
+            {/* Top line */}
+            <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'var(--top-line)' }} />
+            {/* Corner glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 pointer-events-none" style={{ background: 'var(--hero-corner)' }} />
+
+            <div className="p-8 md:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+
+                {/* LEFT */}
+                <div className="lg:col-span-3">
+                  {/* Prompt */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : -12 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="flex items-center gap-2 mb-6"
+                  >
+                    <FiTerminal className="text-cyan-600 dark:text-cyan-400" size={14} />
+                    <span className="font-mono text-sm text-slate-400 dark:text-zinc-500">user@seattle:~$</span>
+                    <span className="font-mono text-sm text-cyan-600 dark:text-cyan-400">whoami</span>
+                  </motion.div>
+
+                  {/* Name */}
+                  <motion.h1
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 16 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight mb-3 leading-none"
+                    style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                  >
+                    <span className="text-slate-900 dark:text-white">Jing</span>{' '}
+                    <span
+                      style={{
+                        background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      Gong
+                    </span>
+                  </motion.h1>
+
+                  {/* Typewriter role */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: mounted ? 1 : 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    className="flex items-center gap-2 mb-8"
+                  >
+                    <span className="text-slate-300 dark:text-zinc-600 font-mono text-sm">▸</span>
+                    <span className="text-xl sm:text-2xl font-mono text-cyan-600 dark:text-cyan-400 tracking-wide">
+                      {typedRole}
+                      <span
+                        className={`inline-block w-[3px] h-6 bg-cyan-600 dark:bg-cyan-400 ml-1 rounded-sm align-middle ${
+                          roleComplete ? 'animate-pulse' : ''
+                        }`}
+                      />
+                    </span>
+                  </motion.div>
+
+                  {/* Bio as code comments */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 12 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    className="font-mono text-sm mb-8 space-y-1.5"
+                  >
+                    <p className="text-slate-400 dark:text-zinc-500">{'// 15+ years turning complex problems'}</p>
+                    <p className="text-slate-400 dark:text-zinc-500">{'// into elegant, scalable solutions.'}</p>
+                    <p className="text-slate-400 dark:text-zinc-500">{'// React · TypeScript · modern web tech.'}</p>
+                  </motion.div>
+
+                  {/* Location + availability */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: mounted ? 1 : 0 }}
+                    transition={{ duration: 0.5, delay: 0.95 }}
+                    className="flex flex-wrap items-center gap-4 mb-10 text-sm font-mono text-slate-500 dark:text-zinc-500"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <FiMapPin size={13} className="text-cyan-600 dark:text-cyan-400" />
+                      Seattle, WA
+                    </span>
+                    <span className="text-slate-300 dark:text-zinc-700">·</span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse" />
+                      Open to opportunities
+                    </span>
+                  </motion.div>
+
+                  {/* CTAs */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 12 }}
+                    transition={{ duration: 0.5, delay: 1.05 }}
+                    className="flex flex-wrap gap-3"
+                  >
+                    <Link href="/projects">
+                      <motion.button
+                        whileHover={{ scale: 1.03, boxShadow: '0 0 28px rgba(59,130,246,0.5)' }}
+                        whileTap={{ scale: 0.97 }}
+                        className="group px-7 py-3 rounded-xl font-mono font-semibold text-sm flex items-center gap-2 cursor-pointer text-white transition-all duration-200"
+                        style={{
+                          background: 'linear-gradient(135deg, #3B82F6, #06B6D4)',
+                          boxShadow: '0 0 20px rgba(59,130,246,0.35)',
+                        }}
+                      >
+                        <FiCode size={15} />
+                        ./view-projects
+                        <FiArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
+                      </motion.button>
+                    </Link>
+
+                    <Link href="/contact">
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="px-7 py-3 rounded-xl font-mono font-semibold text-sm flex items-center gap-2 cursor-pointer text-slate-600 dark:text-zinc-300 transition-all duration-200"
+                        style={{
+                          border: '1px solid var(--card-border)',
+                          background: 'var(--badge-bg)',
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(6,182,212,0.4)';
+                          (e.currentTarget as HTMLElement).style.color = '#0891b2';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = '';
+                          (e.currentTarget as HTMLElement).style.color = '';
+                        }}
+                      >
+                        <FiMail size={15} />
+                        ./contact-me
+                      </motion.button>
+                    </Link>
+                  </motion.div>
+                </div>
+
+                {/* RIGHT — stats + socials */}
+                <div className="lg:col-span-2 space-y-4">
+                  {stats.map((stat, i) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 20 }}
+                      transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
+                      className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 cursor-default"
+                      style={{
+                        background: `var(${stat.bgVar})`,
+                        border: `1px solid var(${stat.borderVar})`,
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.boxShadow = `0 0 24px ${stat.color}20`;
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.boxShadow = '';
+                      }}
+                    >
+                      <div className="text-4xl font-bold font-mono" style={{ color: stat.color }}>
+                        {stat.value}
+                      </div>
+                      <div className="text-xs text-slate-500 dark:text-zinc-500 font-mono leading-tight">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* Social links */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: mounted ? 1 : 0 }}
+                    transition={{ duration: 0.5, delay: 0.9 }}
+                    className="flex gap-3 pt-1"
+                  >
+                    {[
+                      { href: 'https://github.com/jinggong', icon: FiGithub, label: 'GitHub' },
+                      { href: 'https://linkedin.com/in/javascriptguru', icon: FiLinkedin, label: 'LinkedIn' },
+                      { href: 'mailto:leogong99@gmail.com', icon: FiMail, label: 'Email' },
+                    ].map(({ href, icon: Icon, label }) => (
+                      <motion.a
+                        key={label}
+                        href={href}
+                        target={href.startsWith('http') ? '_blank' : undefined}
+                        rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        whileHover={{ y: -3, scale: 1.1 }}
+                        whileTap={{ scale: 0.93 }}
+                        className="p-3 rounded-xl text-slate-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-200 cursor-pointer"
+                        style={{ border: '1px solid var(--card-border)', background: 'var(--badge-bg)' }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(6,182,212,0.35)';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = '';
+                        }}
+                        aria-label={label}
+                      >
+                        <Icon size={20} />
+                      </motion.a>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ── TECH STACK MARQUEE ── */}
+      <section
+        className="py-10 overflow-hidden relative z-10"
+        style={{ borderTop: '1px solid var(--divider)', borderBottom: '1px solid var(--divider)' }}
+      >
+        <div className="tech-marquee flex gap-10 whitespace-nowrap">
+          {[...topSkills, ...topSkills, ...topSkills].map((skill, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-3 font-mono text-sm text-slate-400 dark:text-zinc-600 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-default"
+            >
+              {skill}
+              <span className="text-slate-200 dark:text-zinc-800">·</span>
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CAPABILITIES ── */}
+      <section className="relative py-28 px-4 sm:px-6 lg:px-8 z-10">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="mb-14"
           >
-            <h2 className="text-5xl md:text-6xl font-heading font-bold text-primary mb-6">
-              What I Bring to the Table
+            <div className="flex items-center gap-2 mb-4">
+              <FiTerminal className="text-cyan-600 dark:text-cyan-400" size={13} />
+              <span className="font-mono text-xs text-slate-400 dark:text-zinc-600">$ cat capabilities.md</span>
+            </div>
+            <h2
+              className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white"
+              style={{ fontFamily: 'var(--font-space-grotesk)' }}
+            >
+              What I Build
             </h2>
-            <p className="text-xl text-zinc-600 max-w-3xl mx-auto">
-              Combining technical excellence with user-centered design principles
-            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 content-gap">
-            {highlights.map((item, index) => {
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {capabilities.map((item, index) => {
               const Icon = item.icon;
               return (
                 <motion.div
                   key={item.title}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group relative p-10 bg-white rounded-2xl border-2 border-zinc-200 hover:border-accent transition-all duration-200 cursor-pointer card-interactive"
+                  className="group relative p-6 rounded-2xl transition-all duration-300 cursor-default"
+                  style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)' }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.boxShadow = `0 0 40px ${item.color}18`;
+                    el.style.borderColor = `${item.color}35`;
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.boxShadow = 'var(--card-shadow)';
+                    el.style.borderColor = 'var(--card-border)';
+                  }}
                 >
-                  <div className="w-20 h-20 bg-accent rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-200">
-                    <Icon className="text-white" size={40} />
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
+                    style={{ background: `${item.color}14`, border: `1px solid ${item.color}28` }}
+                  >
+                    <Icon style={{ color: item.color }} size={22} />
                   </div>
-                  <h3 className="text-3xl font-heading font-bold text-primary mb-4 group-hover:text-accent transition-colors duration-200">
+                  <h3
+                    className="text-lg font-bold text-slate-900 dark:text-white mb-2"
+                    style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                  >
                     {item.title}
                   </h3>
-                  <p className="text-lg text-zinc-600 leading-relaxed">{item.description}</p>
+                  <p className="text-slate-600 dark:text-zinc-500 text-sm leading-relaxed mb-5">
+                    {item.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 rounded-md text-xs font-mono"
+                        style={{ color: item.color, background: `${item.color}10`, border: `1px solid ${item.color}22` }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </motion.div>
               );
             })}
@@ -232,182 +469,303 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Projects - Portfolio Grid pattern */}
-      <section className="section-spacing px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
+      {/* ── FEATURED PROJECTS ── */}
+      <section
+        className="relative py-28 px-4 sm:px-6 lg:px-8 z-10"
+        style={{ borderTop: '1px solid var(--divider)' }}
+      >
+        <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="flex items-end justify-between mb-14"
           >
-            <h2 className="text-5xl md:text-6xl font-heading font-bold text-primary mb-6">
-              Featured Projects
-            </h2>
-            <p className="text-xl text-zinc-600">Recent work I'm proud of</p>
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <FiGlobe className="text-cyan-600 dark:text-cyan-400" size={13} />
+                <span className="font-mono text-xs text-slate-400 dark:text-zinc-600">$ ls -la projects/</span>
+              </div>
+              <h2
+                className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white"
+                style={{ fontFamily: 'var(--font-space-grotesk)' }}
+              >
+                Featured Projects
+              </h2>
+            </div>
+            <Link href="/projects">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-lg font-mono text-xs cursor-pointer text-slate-500 dark:text-zinc-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-200"
+                style={{ border: '1px solid var(--card-border)', background: 'var(--badge-bg)' }}
+              >
+                View all <FiArrowRight size={13} />
+              </motion.button>
+            </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 content-gap mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {projects.slice(0, 4).map((project, index) => (
               <motion.div
                 key={project.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
                 viewport={{ once: true }}
-                className="group bg-background rounded-2xl overflow-hidden border-2 border-zinc-200 hover:border-accent transition-all duration-200 card-interactive"
+                className="group relative p-6 rounded-2xl transition-all duration-300"
+                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)' }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.boxShadow = 'var(--hover-shadow)';
+                  el.style.borderColor = 'var(--hover-border)';
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.boxShadow = 'var(--card-shadow)';
+                  el.style.borderColor = 'var(--card-border)';
+                }}
               >
-                <div className="p-10">
-                  <h3 className="text-3xl font-heading font-bold text-primary mb-4 group-hover:text-accent transition-colors duration-200">
-                    {project.title}
-                  </h3>
-                  <p className="text-lg text-zinc-600 mb-6 leading-relaxed">{project.description}</p>
-                  
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    {project.technologies.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-4 py-2 bg-white border-2 border-zinc-200 text-primary rounded-lg font-semibold"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="px-4 py-2 bg-zinc-100 text-zinc-600 rounded-lg font-semibold">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
-                  </div>
-
-                  {project.link && (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-accent hover:text-primary font-heading font-bold text-lg group/link cursor-pointer"
+                <span className="absolute top-5 right-5 font-mono text-xs text-slate-300 dark:text-zinc-700">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3
+                  className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-200 mb-2 pr-8"
+                  style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                >
+                  {project.title}
+                </h3>
+                <p className="text-slate-500 dark:text-zinc-500 text-sm leading-relaxed mb-5">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {project.technologies.slice(0, 4).map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 py-0.5 rounded-md text-xs font-mono"
+                      style={{
+                        background: 'var(--tag-blue-bg)',
+                        border: '1px solid var(--tag-blue-border)',
+                        color: '#3B82F6',
+                      }}
                     >
-                      View Project
-                      <FiArrowRight className="group-hover/link:translate-x-2 transition-transform duration-200" />
-                    </a>
+                      {tech}
+                    </span>
+                  ))}
+                  {project.technologies.length > 4 && (
+                    <span className="px-2 py-0.5 text-slate-400 dark:text-zinc-700 text-xs font-mono">
+                      +{project.technologies.length - 4}
+                    </span>
                   )}
                 </div>
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 font-mono text-xs group/link cursor-pointer transition-colors duration-200"
+                  >
+                    <FiGlobe size={11} />
+                    View Live
+                    <FiArrowRight size={11} className="group-hover/link:translate-x-1 transition-transform duration-200" />
+                  </a>
+                )}
               </motion.div>
             ))}
-          </div>
-
-          <div className="text-center">
-            <Link href="/projects">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-10 py-5 bg-primary text-white rounded-lg font-heading font-bold text-lg shadow-lg hover:bg-accent transition-colors duration-200 inline-flex items-center gap-3 cursor-pointer"
-              >
-                View All Projects
-                <FiArrowRight />
-              </motion.button>
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* Experience Highlight */}
-      <section className="section-spacing px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      {/* ── CAREER TIMELINE ── */}
+      <section
+        className="relative py-28 px-4 sm:px-6 lg:px-8 z-10"
+        style={{ borderTop: '1px solid var(--divider)' }}
+      >
+        <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="mb-14"
           >
-            <h2 className="text-5xl md:text-6xl font-heading font-bold text-primary mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <FiCpu className="text-cyan-600 dark:text-cyan-400" size={13} />
+              <span className="font-mono text-xs text-slate-400 dark:text-zinc-600">$ git log --oneline career</span>
+            </div>
+            <h2
+              className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white"
+              style={{ fontFamily: 'var(--font-space-grotesk)' }}
+            >
               Career Highlights
             </h2>
-            <p className="text-xl text-zinc-600">Trusted by leading tech companies</p>
           </motion.div>
 
-          <div className="space-y-8">
-            {experiences.slice(0, 3).map((exp, index) => (
-              <motion.div
-                key={exp.company}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-2xl p-10 border-2 border-zinc-200 hover:border-accent transition-colors duration-200 cursor-pointer"
-              >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center flex-shrink-0">
-                      <FiAward className="text-white" size={28} />
+          <div className="relative">
+            <div
+              className="absolute left-[7px] top-2 bottom-0 w-px"
+              style={{ background: 'var(--timeline-rail)' }}
+            />
+            <div className="space-y-6 pl-10">
+              {experiences.slice(0, 3).map((exp, index) => (
+                <motion.div
+                  key={exp.company}
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative group"
+                >
+                  <div
+                    className="absolute -left-[2.65rem] top-5 w-3.5 h-3.5 rounded-full border-2 border-blue-500 transition-all duration-300"
+                    style={{ background: 'var(--page-bg)' }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = '#3B82F6';
+                      (e.currentTarget as HTMLElement).style.boxShadow = '0 0 12px rgba(59,130,246,0.8)';
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = 'var(--page-bg)';
+                      (e.currentTarget as HTMLElement).style.boxShadow = '';
+                    }}
+                  />
+                  <div
+                    className="p-6 rounded-2xl transition-all duration-300"
+                    style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)' }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.boxShadow = 'var(--hover-shadow)';
+                      el.style.borderColor = 'var(--hover-border)';
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.boxShadow = 'var(--card-shadow)';
+                      el.style.borderColor = 'var(--card-border)';
+                    }}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                          style={{ background: 'var(--stat-blue-bg)', border: '1px solid var(--stat-blue-border)' }}
+                        >
+                          <FiAward className="text-blue-500 dark:text-blue-400" size={14} />
+                        </div>
+                        <div>
+                          <h3
+                            className="text-base font-bold text-slate-900 dark:text-white"
+                            style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                          >
+                            {exp.company}
+                          </h3>
+                          <p className="text-cyan-600 dark:text-cyan-400 text-xs font-mono mt-0.5">{exp.role}</p>
+                        </div>
+                      </div>
+                      <span
+                        className="text-xs font-mono text-slate-500 dark:text-zinc-600 whitespace-nowrap self-start px-3 py-1 rounded-full"
+                        style={{ background: 'var(--badge-bg)', border: '1px solid var(--badge-border)' }}
+                      >
+                        {exp.period}
+                      </span>
                     </div>
-                    <div>
-                      <h3 className="text-3xl font-heading font-bold text-primary">{exp.company}</h3>
-                      <p className="text-xl text-accent font-semibold">{exp.role}</p>
-                    </div>
+                    <ul className="space-y-2">
+                      {exp.achievements.slice(0, 2).map((achievement, i) => (
+                        <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-zinc-500">
+                          <FiCheckCircle className="text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" size={13} />
+                          <span>{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="text-zinc-500 font-semibold text-lg mt-4 md:mt-0">
-                    {exp.period}
-                  </div>
-                </div>
-                
-                <ul className="space-y-3">
-                  {exp.achievements.slice(0, 3).map((achievement, i) => (
-                    <li key={i} className="flex items-start gap-4 text-zinc-600 text-lg leading-relaxed">
-                      <FiCheckCircle className="text-accent mt-1 flex-shrink-0" size={20} />
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
 
-          <div className="text-center mt-16">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-10 pl-10"
+          >
             <Link href="/experience">
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-10 py-5 bg-white text-primary rounded-lg font-heading font-bold text-lg border-3 border-primary hover:bg-primary hover:text-white transition-colors duration-200 inline-flex items-center gap-3 cursor-pointer shadow-lg"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-sm cursor-pointer text-slate-500 dark:text-zinc-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-200"
+                style={{ border: '1px solid var(--card-border)', background: 'var(--badge-bg)' }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(6,182,212,0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--card-border)';
+                }}
               >
-                View Full Experience
-                <FiArrowRight />
+                View full history <FiArrowRight size={13} />
               </motion.button>
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA Section - Bold color */}
-      <section className="section-spacing px-4 sm:px-6 lg:px-8 bg-primary relative overflow-hidden">
-        <div className="absolute inset-0 block-pattern opacity-10" aria-hidden="true" />
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="max-w-5xl mx-auto text-center relative z-10"
-        >
-          <h2 className="text-5xl md:text-6xl font-heading font-bold text-white mb-8">
-            Let's Connect
-          </h2>
-          <p className="text-2xl text-zinc-300 mb-12 leading-relaxed">
-            Feel free to reach out to discuss technology, projects, or just to connect.
-          </p>
-          
-          <Link href="/contact">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-12 py-6 bg-accent text-white rounded-xl font-heading font-bold text-xl shadow-2xl hover:bg-white hover:text-primary transition-colors duration-200 inline-flex items-center gap-4 cursor-pointer"
-            >
-              <FiMail size={28} />
-              Get In Touch
-            </motion.button>
-          </Link>
-        </motion.div>
+      {/* ── CTA ── */}
+      <section
+        className="relative py-28 px-4 sm:px-6 lg:px-8 z-10"
+        style={{ borderTop: '1px solid var(--divider)' }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="relative rounded-2xl text-center overflow-hidden py-20 px-8"
+            style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)' }}
+          >
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--section-glow)' }} />
+            <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'var(--top-line)' }} />
+
+            <div className="relative z-10">
+              <h2
+                className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight"
+                style={{ fontFamily: 'var(--font-space-grotesk)' }}
+              >
+                Let&apos;s Build Something
+                <br />
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Remarkable
+                </span>
+              </h2>
+
+              <p className="text-slate-600 dark:text-zinc-500 text-lg mb-12 max-w-md mx-auto">
+                Reach out to discuss technology, projects, or opportunities.
+              </p>
+
+              <Link href="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(59,130,246,0.6)' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center gap-3 px-10 py-4 rounded-xl font-mono font-semibold text-base cursor-pointer text-white transition-all duration-200"
+                  style={{
+                    background: 'linear-gradient(135deg, #3B82F6, #06B6D4)',
+                    boxShadow: '0 0 30px rgba(59,130,246,0.35)',
+                  }}
+                >
+                  <FiMail size={18} />
+                  ./get-in-touch
+                </motion.button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </section>
     </div>
   );

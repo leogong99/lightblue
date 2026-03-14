@@ -2,19 +2,118 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System Colors - Monochrome + Blue Accent */
+/* ── Font references ── */
 :root {
-  --color-primary: #18181B;       /* zinc-900 */
-  --color-secondary: #3F3F46;     /* zinc-700 */
-  --color-accent: #2563EB;        /* blue-600 */
-  --color-background: #FAFAFA;    /* neutral-50 */
-  --color-surface: #FFFFFF;       /* white */
-  --color-text: #09090B;          /* zinc-950 */
-  --color-text-muted: #71717A;    /* zinc-500 */
-  --color-border: #E4E4E7;        /* zinc-200 */
-  
   --font-heading: var(--font-space-grotesk), system-ui, sans-serif;
   --font-body: var(--font-archivo), system-ui, sans-serif;
+
+  /* ── Legacy design-system colors (kept for backward compat) ── */
+  --color-primary: #18181B;
+  --color-secondary: #3F3F46;
+  --color-accent: #2563EB;
+  --color-background: #FAFAFA;
+  --color-surface: #FFFFFF;
+  --color-text: #09090B;
+  --color-text-muted: #71717A;
+  --color-border: #E4E4E7;
+
+  /* ══════════════════════════════════════════
+     LIGHT THEME  (system default)
+  ══════════════════════════════════════════ */
+
+  /* Surfaces */
+  --page-bg:          #F0F4FF;
+  --nav-bg:           rgba(240,244,255,0.94);
+  --nav-border:       rgba(0,0,0,0.07);
+  --card-bg:          rgba(255,255,255,0.88);
+  --card-border:      rgba(0,0,0,0.07);
+  --card-shadow:      0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.07);
+  --hover-shadow:     0 4px 24px rgba(59,130,246,0.15), 0 1px 3px rgba(0,0,0,0.05);
+  --hover-border:     rgba(59,130,246,0.38);
+
+  /* Ambient decoration */
+  --dot-color:        rgba(59,130,246,0.05);
+  --orb-blue:         rgba(59,130,246,0.08);
+  --orb-cyan:         rgba(6,182,212,0.05);
+  --top-line:         linear-gradient(90deg, transparent, rgba(59,130,246,0.3), rgba(6,182,212,0.15), transparent);
+  --hero-corner:      radial-gradient(circle at top right, rgba(59,130,246,0.1) 0%, transparent 70%);
+  --section-glow:     radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.08) 0%, transparent 65%);
+  --timeline-rail:    linear-gradient(to bottom, rgba(59,130,246,0.35), rgba(6,182,212,0.15), transparent);
+
+  /* Small elements */
+  --divider:          rgba(0,0,0,0.06);
+  --badge-bg:         rgba(0,0,0,0.04);
+  --badge-border:     rgba(0,0,0,0.08);
+  --terminal-bar-bg:  rgba(0,0,0,0.04);
+  --input-bg:         rgba(0,0,0,0.025);
+  --input-border:     rgba(0,0,0,0.08);
+  --tag-blue-bg:      rgba(59,130,246,0.06);
+  --tag-blue-border:  rgba(59,130,246,0.15);
+  --achievement-bg:   rgba(0,0,0,0.02);
+  --achievement-border: rgba(0,0,0,0.06);
+
+  /* Stat card tints */
+  --stat-blue-bg:     rgba(59,130,246,0.06);
+  --stat-blue-border: rgba(59,130,246,0.15);
+  --stat-green-bg:    rgba(16,185,129,0.06);
+  --stat-green-border:rgba(16,185,129,0.15);
+  --stat-purple-bg:   rgba(139,92,246,0.06);
+  --stat-purple-border:rgba(139,92,246,0.15);
+  --stat-amber-bg:    rgba(245,158,11,0.06);
+  --stat-amber-border:rgba(245,158,11,0.15);
+
+  /* Nav active state */
+  --nav-active-color:  #0891b2;  /* cyan-600 */
+  --nav-active-border: rgba(8,145,178,0.25);
+  --nav-active-bg:     rgba(8,145,178,0.05);
+}
+
+/* ══════════════════════════════════════════
+   DARK THEME  (auto via prefers-color-scheme)
+══════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg:          #060912;
+    --nav-bg:           rgba(6,9,18,0.94);
+    --nav-border:       rgba(255,255,255,0.08);
+    --card-bg:          rgba(255,255,255,0.02);
+    --card-border:      rgba(255,255,255,0.08);
+    --card-shadow:      none;
+    --hover-shadow:     0 0 40px rgba(59,130,246,0.12);
+    --hover-border:     rgba(59,130,246,0.25);
+
+    --dot-color:        rgba(59,130,246,0.12);
+    --orb-blue:         rgba(59,130,246,0.12);
+    --orb-cyan:         rgba(6,182,212,0.08);
+    --top-line:         linear-gradient(90deg, transparent, rgba(59,130,246,0.5), rgba(6,182,212,0.3), transparent);
+    --hero-corner:      radial-gradient(circle at top right, rgba(59,130,246,0.15) 0%, transparent 70%);
+    --section-glow:     radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.14) 0%, transparent 65%);
+    --timeline-rail:    linear-gradient(to bottom, rgba(59,130,246,0.5), rgba(6,182,212,0.3), transparent);
+
+    --divider:          rgba(255,255,255,0.06);
+    --badge-bg:         rgba(255,255,255,0.04);
+    --badge-border:     rgba(255,255,255,0.08);
+    --terminal-bar-bg:  rgba(255,255,255,0.04);
+    --input-bg:         rgba(255,255,255,0.03);
+    --input-border:     rgba(255,255,255,0.08);
+    --tag-blue-bg:      rgba(59,130,246,0.08);
+    --tag-blue-border:  rgba(59,130,246,0.2);
+    --achievement-bg:   rgba(255,255,255,0.02);
+    --achievement-border:rgba(255,255,255,0.06);
+
+    --stat-blue-bg:     rgba(59,130,246,0.1);
+    --stat-blue-border: rgba(59,130,246,0.25);
+    --stat-green-bg:    rgba(16,185,129,0.1);
+    --stat-green-border:rgba(16,185,129,0.25);
+    --stat-purple-bg:   rgba(139,92,246,0.1);
+    --stat-purple-border:rgba(139,92,246,0.25);
+    --stat-amber-bg:    rgba(245,158,11,0.1);
+    --stat-amber-border:rgba(245,158,11,0.25);
+
+    --nav-active-color:  #22d3ee;  /* cyan-400 */
+    --nav-active-border: rgba(34,211,238,0.25);
+    --nav-active-bg:     rgba(34,211,238,0.05);
+  }
 }
 
 @layer base {
@@ -308,6 +407,21 @@ a, button, [role="button"], [onclick] {
   border-radius: 4px;
   transform: rotate(15deg);
   z-index: -1;
+}
+
+/* Tech stack marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.tech-marquee {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.tech-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* Scroll snap for smooth scrolling */
